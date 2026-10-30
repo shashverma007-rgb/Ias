@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Palblox — Play Your World</title>
+<style>
+:root{--bg:#0b1020;--panel:#141b30;--panel2:#1b2540;--text:#f5f7ff;--muted:#a9b4d0;--blue:#6d7cff;--cyan:#48d9e8;--line:#293553}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top right,#1c2c58 0,transparent 42%),var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+button,input{font:inherit}button{cursor:pointer}.wrap{max-width:1180px;margin:auto;padding:0 22px}
+header{height:76px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;position:sticky;top:0;background:rgba(11,16,32,.88);backdrop-filter:blur(14px);z-index:5}
+.nav{display:flex;align-items:center;gap:28px;width:100%}.brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:23px;letter-spacing:-.8px}.logo{height:36px;width:36px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--cyan));display:grid;place-items:center;color:#071020;font-weight:1000;box-shadow:0 6px 24px #526aff55}
+.navlinks{display:flex;gap:20px}.navlinks a{color:var(--muted);text-decoration:none;font-weight:650;font-size:14px}.navlinks a:hover{color:white}.search{margin-left:auto;position:relative}.search input{width:230px;background:#111a30;border:1px solid var(--line);border-radius:12px;padding:11px 14px 11px 38px;color:white;outline:none}.search input:focus{border-color:var(--blue)}.search span{position:absolute;left:13px;top:9px;color:var(--muted)}
+.hero{padding:62px 0 38px;display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center}.eyebrow{display:inline-flex;align-items:center;gap:8px;color:#9feaf1;background:#15313f;border:1px solid #285465;padding:7px 12px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:.7px;text-transform:uppercase}.dot{width:7px;height:7px;background:#55e5bb;border-radius:50%}
+h1{font-size:clamp(42px,6vw,70px);line-height:.99;letter-spacing:-3px;margin:20px 0 18px}h1 em{font-style:normal;background:linear-gradient(90deg,#8c9aff,#55e4ed);background-clip:text;color:transparent}.hero p{color:var(--muted);font-size:17px;line-height:1.7;max-width:540px;margin:0 0 26px}.primary{border:0;border-radius:12px;padding:13px 19px;background:linear-gradient(110deg,var(--blue),#5368ed);color:white;font-weight:800;box-shadow:0 9px 25px #5368ed35}.secondary{border:1px solid var(--line);border-radius:12px;padding:12px 17px;background:#151d33;color:white;font-weight:750;margin-left:9px}.primary:hover,.secondary:hover{transform:translateY(-1px);filter:brightness(1.08)}
+.hero-art{min-height:300px;display:grid;place-items:center;position:relative}.orb{width:min(100%,390px);aspect-ratio:1;border-radius:35%;transform:rotate(-8deg);background:linear-gradient(145deg,#283b78,#111a34 62%);border:1px solid #4358a2;box-shadow:inset 0 0 60px #637cff25,0 30px 80px #050914;display:grid;place-items:center;position:relative;overflow:hidden}.orb:before,.orb:after{content:"";position:absolute;border:1px solid #7e91ff55;border-radius:50%;width:80%;height:80%;transform:rotate(24deg)}.orb:after{width:110%;height:42%;transform:rotate(-38deg)}.cube{width:112px;height:112px;background:linear-gradient(135deg,#8b9aff,#4ce0e8);border-radius:28px;transform:rotate(8deg);display:grid;place-items:center;color:#111a34;font-size:55px;font-weight:1000;box-shadow:0 20px 55px #5b72ff88;z-index:1}.float{position:absolute;background:#172440;border:1px solid #354775;border-radius:14px;padding:12px 15px;box-shadow:0 15px 30px #0004;font-weight:750}.float small{display:block;color:var(--muted);font-size:11px;margin-top:4px}.f1{top:18%;left:-1%}.f2{bottom:14%;right:-2%}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:6px 0 48px}.stat{padding:17px 19px;background:#11192d;border:1px solid #222e4b;border-radius:15px}.stat strong{font-size:22px}.stat span{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+.sectionhead{display:flex;align-items:end;justify-content:space-between;gap:15px;margin-bottom:18px}.sectionhead h2{margin:0;font-size:26px;letter-spacing:-.7px}.sectionhead p{margin:6px 0 0;color:var(--muted);font-size:14px}.pill{color:#aebaff;background:#202b51;border:1px solid #374777;padding:7px 10px;border-radius:9px;font-size:12px;font-weight:800}
+.games{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}.game{border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,#17213a,#11182b);overflow:hidden;transition:.18s}.game:hover{transform:translateY(-3px);border-color:#5269b3}.thumb{height:155px;display:grid;place-items:center;position:relative;overflow:hidden}.thumb .symbol{font-size:54px;filter:drop-shadow(0 10px 15px #0005)}.thumb:before,.thumb:after{content:"";position:absolute;border:1px solid #ffffff25;border-radius:50%;width:190px;height:190px}.thumb:after{width:130px;height:130px}.t1{background:linear-gradient(135deg,#43358b,#171d46)}.t2{background:linear-gradient(135deg,#176d7c,#15334c)}.t3{background:linear-gradient(135deg,#a14d4b,#422342)}.t4{background:linear-gradient(135deg,#a06c29,#4b3427)}.t5{background:linear-gradient(135deg,#28734d,#163a3a)}.t6{background:linear-gradient(135deg,#344b84,#1b2349)}.gamebody{padding:16px}.gamebody h3{margin:0 0 6px;font-size:17px}.gamebody p{color:var(--muted);font-size:13px;line-height:1.5;min-height:39px;margin:0 0 15px}.gamefoot{display:flex;align-items:center;justify-content:space-between}.status{font-size:11px;color:#9ca9c9;font-weight:800;text-transform:uppercase;letter-spacing:.6px}.play{border:1px solid #3b4b7b;background:#202b4b;color:white;border-radius:9px;padding:8px 12px;font-size:12px;font-weight:800}.play:disabled{opacity:.65;cursor:default}.empty{display:none;color:var(--muted);padding:28px;text-align:center;border:1px dashed var(--line);border-radius:14px;margin-top:16px}
+.callout{margin:42px 0 54px;padding:25px;border-radius:18px;border:1px solid #34436f;background:linear-gradient(110deg,#1a2547,#142b3d);display:flex;align-items:center;justify-content:space-between;gap:20px}.callout h2{margin:0 0 7px}.callout p{margin:0;color:var(--muted);font-size:14px;line-height:1.5}
+footer{border-top:1px solid #202a43;padding:25px 0 34px;color:#8f9bb8;font-size:12px;display:flex;justify-content:space-between;gap:16px}
+.notice{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#eef2ff;color:#111a34;padding:13px 18px;border-radius:12px;font-weight:750;box-shadow:0 12px 35px #0006;display:none;z-index:10;max-width:90%;text-align:center}
+@media(max-width:760px){.nav{gap:13px}.navlinks{display:none}.search input{width:min(42vw,200px)}.hero{grid-template-columns:1fr;padding-top:42px}.hero-art{min-height:260px;grid-row:1}.orb{width:260px}.cube{width:85px;height:85px;font-size:42px}.f1{left:4%}.f2{right:2%}h1{letter-spacing:-2px}.games{grid-template-columns:repeat(2,minmax(0,1fr))}.thumb{height:120px}.gamebody{padding:13px}.stats{margin-bottom:36px}.callout{align-items:flex-start;flex-direction:column}}
+@media(max-width:470px){.wrap{padding:0 15px}.brand{font-size:20px}.search input{width:145px}.hero-art{min-height:230px}.orb{width:225px}.float{font-size:12px;padding:9px 11px}.f1{top:12%}.f2{bottom:9%}.games{grid-template-columns:1fr}.thumb{height:145px}.stats{gap:7px}.stat{padding:13px 10px}.stat strong{font-size:19px}.stat span{font-size:11px}.sectionhead h2{font-size:23px}footer{flex-direction:column}}
+</style>
+</head>
+<body>
+<header><div class="wrap nav">
+  <div class="brand"><div class="logo">P</div>palblox</div>
+  <nav class="navlinks"><a href="#discover">Discover</a><a href="#library">Game library</a><a href="#about">About</a></nav>
+  <label class="search"><span>⌕</span><input id="search" type="search" placeholder="Search games…" aria-label="Search games"></label>
+</div></header>
+<main class="wrap">
+<section class="hero">
+  <div><div class="eyebrow"><span class="dot"></span> Your next world starts here</div>
+    <h1>Jump in.<br><em>Play big.</em></h1>
+    <p>Welcome to Palblox, a home for fun games and big ideas. This is your starter game platform — we can add your games, features, and multiplayer options as we build it together.</p>
+    <button class="primary" onclick="document.querySelector('#library').scrollIntoView({behavior:'smooth'})">Explore games ↓</button>
+    <button class="secondary" onclick="showNotice('Palblox is your starter platform. Tell me which game to build first!')">What is Palblox?</button>
+  </div>
+  <div class="hero-art"><div class="orb"><div class="cube">P</div></div><div class="float f1">🎮 Game zone<small>Your next adventure</small></div><div class="float f2">✨ Built for fun<small>More games coming</small></div></div>
+</section>
+<div class="stats"><div class="stat"><strong>01</strong><span>Platform prototype</span></div><div class="stat"><strong>∞</strong><span>Ideas to explore</span></div><div class="stat"><strong>Next up</strong><span>Your first game</span></div></div>
+<section id="library">
+  <div class="sectionhead"><div><h2 id="discover">Game library</h2><p>Starter slots ready for the games you choose.</p></div><span class="pill">PREVIEW</span></div>
+  <div class="games" id="games">
+    <article class="game" data-name="adventure quest"><div class="thumb t1"><span class="symbol">🗺️</span></div><div class="gamebody"><h3>Adventure Quest</h3><p>Explore mysterious places and discover what's hidden.</p><div class="gamefoot"><span class="status">Game slot 01</span><button class="play" onclick="showNotice('Adventure Quest is a placeholder. We can build it when you choose it.')">Coming soon</button></div></div></article>
+    <article class="game" data-name="battle arena"><div class="thumb t2"><span class="symbol">⚔️</span></div><div class="gamebody"><h3>Battle Arena</h3><p>Enter the arena and get ready for action.</p><div class="gamefoot"><span class="status">Game slot 02</span><button class="play" onclick="showNotice('Battle Arena is a placeholder. We can build it when you choose it.')">Coming soon</button></div></div></article>
+    <article class="game" data-name="speed racers"><div class="thumb t3"><span class="symbol">🏎️</span></div><div class="gamebody"><h3>Speed Racers</h3><p>Race around the track and chase the finish line.</p><div class="gamefoot"><span class="status">Game slot 03</span><button class="play" onclick="showNotice('Speed Racers is a placeholder. We can build it when you choose it.')">Coming soon</button></div></div></article>
+    <article class="game" data-name="obby parkour"><div class="thumb t4"><span class="symbol">🏃</span></div><div class="gamebody"><h3>Obby Parkour</h3><p>Jump, dodge, and make it through tricky obstacles.</p><div class="gamefoot"><span class="status">Game slot 04</span><button class="play" onclick="showNotice('Obby Parkour is a placeholder. We can build it when you choose it.')">Coming soon</button></div></div></article>
+    <article class="game" data-name="pet world"><div class="thumb t5"><span class="symbol">🐾</span></div><div class="gamebody"><h3>Pet World</h3><p>Meet cute companions and imagine your own pet world.</p><div class="gamefoot"><span class="status">Game slot 05</span><button class="play" onclick="showNotice('Pet World is a placeholder. We can build it when you choose it.')">Coming soon</button></div></div></article>
+    <article class="game" data-name="survival island"><div class="thumb t6"><span class="symbol">🌴</span></div><div class="gamebody"><h3>Survival Island</h3><p>Start with nothing and see how long you can survive.</p><div class="gamefoot"><span class="status">Game slot 06</span><button class="play" onclick="showNotice('Survival Island is a placeholder. We can build it when you choose it.')">Coming soon</button></div></div></article>
+  </div>
+  <div class="empty" id="empty">No games match that search. Try another name.</div>
+</section>
+<section class="callout" id="about"><div><h2>Your platform. Your rules.</h2><p>These are sample cards, not playable games yet. Tell me the first game you want, and we can replace a slot with a real game.</p></div><button class="primary" onclick="showNotice('Ready! Send the name and features of the first game you want to build.')">Plan the first game ↗</button></section>
+</main>
+<footer class="wrap"><span>© Palblox · Starter prototype</span><span>Made to grow one game at a time</span></footer>
+<div class="notice" id="notice" role="status"></div>
+<script>
+let noticeTimer;
+function showNotice(message){const n=document.getElementById('notice');n.textContent=message;n.style.display='block';clearTimeout(noticeTimer);noticeTimer=setTimeout(()=>n.style.display='none',3200)}
+document.getElementById('search').addEventListener('input',e=>{const q=e.target.value.trim().toLowerCase();let visible=0;document.querySelectorAll('.game').forEach(card=>{const show=card.dataset.name.includes(q)||card.querySelector('h3').textContent.toLowerCase().includes(q);card.style.display=show?'':'none';if(show)visible++});document.getElementById('empty').style.display=visible?'none':'block'});
+</script>
+</body>
+</html>
