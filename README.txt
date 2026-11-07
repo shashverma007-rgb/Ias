@@ -3,11 +3,10 @@ IAS GAMING — VERSION 2
 FILES
 - index.html — login/signup screen and game-card dashboard
 - style.css — dark gaming theme
-- app.js — Supabase auth, username/email login, session restore and logout
-- Username login requires a separately implemented and deployed Supabase Edge Function named username-login.
+- app.js — Supabase email login, session restore and logout
 
 IMPORTANT
-This project uses Supabase for real authentication. Do not paste a Supabase service_role/secret key into app.js or any public GitHub file. The browser uses only the anon/publishable key. The Edge Function uses the service role key on the server.
+This project uses Supabase for real authentication. Do not paste a Supabase service_role/secret key into app.js or any public GitHub file. The browser uses only the anon/publishable key.
 
 A. CREATE SUPABASE PROJECT
 1. Go to https://supabase.com/ and create a project.
@@ -17,26 +16,9 @@ A. CREATE SUPABASE PROJECT
    PASTE_YOUR_SUPABASE_ANON_OR_PUBLISHABLE_KEY_HERE
 4. Do not paste the service_role/secret key into app.js.
 
-B. DEPLOY USERNAME LOGIN EDGE FUNCTION
-Username-to-email lookup must happen securely on the server. The username-login
-function is not included in this project, so email login works but username login
-will not work until a compatible function is implemented and deployed.
-
-After implementing a compatible function, deployment requires the Supabase CLI:
-1. Install the Supabase CLI: https://supabase.com/docs/guides/cli
-2. Open a terminal in the project folder.
-3. Run: supabase login
-4. Run: supabase link --project-ref YOUR_PROJECT_REF
-   Find project ref in Supabase project URL or Project Settings > General.
-5. Configure any server-side secrets required by your implementation in
-   Supabase, never in browser files.
-6. Deploy the implemented function:
-   supabase functions deploy username-login
-7. In Supabase Dashboard > Edge Functions, confirm username-login is deployed.
-
-The client sends a username and password and expects access_token and
-refresh_token in the response. The function must verify the password through
-Supabase Auth and protect any privileged credentials on the server.
+B. SIGN-IN
+Sign in with your email address and password. The username entered at signup is
+a display name and cannot be used to log in. No Edge Function is needed.
 
 C. EMAIL CONFIRMATION AND URLS
 1. Supabase Dashboard > Authentication > URL Configuration.
@@ -47,8 +29,7 @@ D. UPLOAD TO GITHUB
 1. Sign in at https://github.com/.
 2. Open your IAS repository, or create a repository named IAS.
 3. Upload index.html, style.css and app.js to the repository root.
-4. Commit changes. If you have implemented the optional username-login function,
-   deploy it separately with the Supabase CLI.
+4. Commit changes.
 
 E. ENABLE GITHUB PAGES
 1. Repository > Settings > Pages.
@@ -67,13 +48,10 @@ Replace the example with the real public game URL.
 TESTING
 - Sign up with a username, email and password (at least 8 characters).
 - Confirm your email if confirmation is enabled.
-- Log in using your email address and password. Username login additionally
-  requires the separately implemented and deployed Edge Function.
+- Log in using your email address and password.
 - Log out and test again.
 
 LIMITATIONS / NEXT STEPS
 - This is a front-end gaming portal, not a multiplayer game server.
 - Rivals is currently a placeholder card; connect its real published game URL.
-- A username-login implementation needs uniqueness enforcement and appropriate
-  abuse protection, including rate limiting, before public deployment.
-- The function should be deployed and tested before relying on username login. Email login works directly through Supabase Auth.
+- Display names are not guaranteed to be unique and cannot be used to log in.

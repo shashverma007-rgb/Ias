@@ -34,10 +34,13 @@ function setMode(next) {
   $("username").required = signup;
   $("email").required = signup;
   $("login-id").required = !signup;
+  $("username").disabled = !signup;
+  $("email").disabled = !signup;
+  $("login-id").disabled = signup;
   $("form-title").textContent = signup ? "Create account" : "Log in";
   $("form-subtitle").textContent = signup
     ? "Create your IAS player account."
-    : "Enter your username or email and password.";
+    : "Enter your email and password.";
   $("password").autocomplete = signup ? "new-password" : "current-password";
   $("submit-button").innerHTML = signup ? 'CREATE ACCOUNT <span>→</span>' : 'LOG IN <span>→</span>';
   showMessage("");
@@ -87,25 +90,7 @@ form.addEventListener("submit", async (event) => {
         showMessage("Check your email to confirm your account, then log in.", true);
       }
     } else {
-      const loginId = $("login-id").value.trim();
-      let email = loginId;
-      if (!loginId.includes("@")) {
-        const { data, error } = await supabaseClient.functions.invoke("username-login", {
-          body: { username: loginId, password }
-        });
-        if (error) throw new Error(error.message || "Username login failed. Check Edge Function setup.");
-        if (!data?.access_token || !data?.refresh_token) {
-          throw new Error(data?.error || "Username or password is incorrect.");
-        }
-        const { data: sessionData, error: sessionError } =
-          await supabaseClient.auth.setSession({
-            access_token: data.access_token,
-            refresh_token: data.refresh_token
-          });
-        if (sessionError) throw sessionError;
-        showDashboard(sessionData.user, loginId);
-        return;
-      }
+      const email = $("login-id").value.trim();
       const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
       if (error) throw error;
       showDashboard(data.user);
