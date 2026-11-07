@@ -4,7 +4,7 @@
 const SUPABASE_URL = "https://mpdupspwlkwewrgwzclr.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_LSJsn-gLFRFEw1vH9_C5TQ_7OeEJ0V4";
 
-alert('jhvsddkhvsv')
+window.alert('jhvsddkhvsv')
 
 const configured = SUPABASE_URL.startsWith("https://") &&
   !SUPABASE_URL.includes("PASTE_") &&
