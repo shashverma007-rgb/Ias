@@ -81,7 +81,12 @@ form.addEventListener("submit", async (event) => {
       }
       if (password.length < 8) throw new Error("Password must be at least 8 characters.");
       const { data, error } = await supabaseClient.auth.signUp({
-        email, password, options: { data: { username } }
+        email,
+        password,
+        options: {
+          data: { username },
+          emailRedirectTo: window.location.origin + window.location.pathname
+        }
       });
       if (error) throw error;
       if (data.session) showDashboard(data.user, username);

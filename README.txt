@@ -22,8 +22,14 @@ a display name and cannot be used to log in. No Edge Function is needed.
 
 C. EMAIL CONFIRMATION AND URLS
 1. Supabase Dashboard > Authentication > URL Configuration.
-2. Add your GitHub Pages URL to Site URL and Redirect URLs after publishing.
-3. Keep email confirmation enabled if possible. A user may need to confirm their email before first login.
+2. Set Site URL to your GitHub Pages URL, including the repository path and
+   trailing slash (for example https://YOUR-USER.github.io/Ias/).
+3. Add that same URL to Redirect URLs. Signup explicitly requests a redirect
+   to the page where the signup occurred; its URL must be allowed here.
+   If users can sign up from /Ias/index.html as well, allow that URL too.
+4. If the confirmation email template was customized, use Supabase's
+   {{ .ConfirmationURL }} link rather than a hard-coded redirect.
+5. Keep email confirmation enabled if possible. A user may need to confirm their email before first login.
 
 D. UPLOAD TO GITHUB
 1. Sign in at https://github.com/.
