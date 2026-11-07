@@ -11,6 +11,30 @@
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="app.js" defer></script>
+  <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+        const supabase = createClient('https://mpdupspwlkwewrgwzclr.supabase.co', 'sb_publishable_LSJsn-gLFRFEw1vH9_C5TQ_7OeEJ0V4')
+      
+        const email = () => document.getElementById('email').value
+        const pass  = () => document.getElementById('password').value
+        const msg   = t => document.getElementById('msg').textContent = t
+      
+        document.getElementById('signup').onclick = async () => {
+          const { error } = await supabase.auth.signUp({ email: email(), password: pass() })
+          msg(error ? error.message : 'Check your email to confirm.')
+        }
+        document.getElementById('login').onclick = async () => {
+          const { error } = await supabase.auth.signInWithPassword({ email: email(), password: pass() })
+          msg(error ? error.message : 'Logged in!')
+        }
+        document.getElementById('logout').onclick = () => supabase.auth.signOut()
+      
+        // Show/hide parts of the page based on login state
+        supabase.auth.onAuthStateChange((_e, session) => {
+          document.getElementById('app').hidden = !session
+          document.getElementById('auth').hidden = !!session
+        })
+</script>
 </head>
 <body>
   <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
