@@ -9,32 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js"></script>
-  <script type="module">
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
-        const supabase = createClient('https://mpdupspwlkwewrgwzclr.supabase.co', 'sb_publishable_LSJsn-gLFRFEw1vH9_C5TQ_7OeEJ0V4')
-      
-        const email = () => document.getElementById('email').value
-        const pass  = () => document.getElementById('password').value
-        const msg   = t => document.getElementById('msg').textContent = t
-      
-        document.getElementById('signup').onclick = async () => {
-          const { error } = await supabase.auth.signUp({ email: email(), password: pass() })
-          msg(error ? error.message : 'Check your email to confirm.')
-        }
-        document.getElementById('login').onclick = async () => {
-          const { error } = await supabase.auth.signInWithPassword({ email: email(), password: pass() })
-          msg(error ? error.message : 'Logged in!')
-        }
-        document.getElementById('logout').onclick = () => supabase.auth.signOut()
-      
-        // Show/hide parts of the page based on login state
-        supabase.auth.onAuthStateChange((_e, session) => {
-          document.getElementById('app').hidden = !session
-          document.getElementById('auth').hidden = !!session
-        })
-</script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="app.js"></script>
 </head>
 <body>
   <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
@@ -79,7 +55,7 @@
           <label class="field">Password
             <input id="password" type="password" placeholder="At least 8 characters" minlength="8" autocomplete="current-password" required>
           </label>
-          <button class="primary-button" id="login" type="submit">LOG IN <span>→</span></button>
+          <button class="primary-button" id="submit-button" type="submit">LOG IN <span>→</span></button>
           <p id="auth-message" class="message" aria-live="polite"></p>
         </form>
         <p class="secure-note"><span>▣</span> Account security powered by Supabase.</p>
@@ -91,6 +67,7 @@
         <div><p class="eyebrow">IAS ARCADE</p><h1>CHOOSE YOUR <span>NEXT GAME.</span></h1><p class="muted">Welcome, <strong id="welcome-name">Player</strong>. What are we playing?</p></div>
         <button id="logout-button" class="outline-button" type="button">LOG OUT ↗</button>
       </div>
+      <p id="dashboard-message" class="message" aria-live="polite"></p>
       <div class="game-grid">
         <article class="game-card">
           <div class="game-art art-rivals"><span class="art-label">IAS ORIGINAL</span><span class="art-symbol">⊕</span><span class="art-title">RIVALS</span></div>

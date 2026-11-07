@@ -7,7 +7,7 @@ const SUPABASE_ANON_KEY = "sb_publishable_LSJsn-gLFRFEw1vH9_C5TQ_7OeEJ0V4";
 const configured = SUPABASE_URL.startsWith("https://") &&
   !SUPABASE_URL.includes("PASTE_") &&
   !SUPABASE_ANON_KEY.includes("PASTE_");
-const supabaseClient = configured
+const supabaseClient = configured && window.supabase
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
   : null;
 
@@ -59,7 +59,9 @@ function showAuth() {
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   if (!supabaseClient) {
-    showMessage("Setup required: add your Supabase URL and public key in app.js.");
+    showMessage(configured
+      ? "Could not load Supabase. Check your connection and reload the page."
+      : "Setup required: add your Supabase URL and public key in app.js.");
     return;
   }
   const password = $("password").value;
@@ -81,8 +83,8 @@ form.addEventListener("submit", async (event) => {
       if (error) throw error;
       if (data.session) showDashboard(data.user, username);
       else {
-        showMessage("Account created! Check your email to confirm, then log in with your username or email.", true);
         setMode("login");
+        showMessage("Check your email to confirm your account, then log in.", true);
       }
     } else {
       const loginId = $("login-id").value.trim();
@@ -116,13 +118,16 @@ form.addEventListener("submit", async (event) => {
 });
 
 $("logout-button").addEventListener("click", async () => {
-  if (supabaseClient) {
+  try {
     const { error } = await supabaseClient.auth.signOut();
-    if (error) { showMessage(error.message); return; }
+    if (error) throw error;
+    $("dashboard-message").textContent = "";
+    showAuth();
+    form.reset();
+    setMode("login");
+  } catch (error) {
+    $("dashboard-message").textContent = error.message || "Could not log out. Please try again.";
   }
-  showAuth();
-  form.reset();
-  setMode("login");
 });
 
 document.querySelectorAll("[data-game]").forEach((button) => {
@@ -134,11 +139,22 @@ document.querySelectorAll("[data-game]").forEach((button) => {
 });
 
 async function restoreSession() {
-  if (!supabaseClient) return;
-  const { data } = await supabaseClient.auth.getSession();
-  if (data.session?.user) showDashboard(data.session.user);
+  if (!supabaseClient) {
+    showMessage(configured
+      ? "Could not load Supabase. Check your connection and reload the page."
+      : "Setup required: add your Supabase URL and public key in app.js.");
+    return;
+  }
   supabaseClient.auth.onAuthStateChange((_event, session) => {
     if (session?.user) showDashboard(session.user);
+    else showAuth();
   });
+  try {
+    const { data, error } = await supabaseClient.auth.getSession();
+    if (error) throw error;
+    if (data.session?.user) showDashboard(data.session.user);
+  } catch (error) {
+    showMessage(error.message || "Could not restore your session. Please try signing in again.");
+  }
 }
 restoreSession();
